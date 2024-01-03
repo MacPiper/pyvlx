@@ -88,8 +88,15 @@ class NodeUpdater:
             if frame.node_id not in self.pyvlx.nodes:
                 return
             node = self.pyvlx.nodes[frame.node_id]
-            position = Position(frame.current_position)
-            target: Any = Position(frame.target)
+            
+            if (frame.current_position != Parameter()):
+                position = Position(frame.current_position)
+                target: Any = Position(frame.target)
+            else:
+                PYVLXLOG.info("++++++++++++++++ Case of position value UNKNOWN received -> use previously received value instead") # TODO change from info to debug
+                position = node.position
+                target = node.target
+          
             # KLF transmits for functional parameters basically always 'No feed-back value known’ (0xF7FF).
             # In home assistant this cause unreasonable values like -23%. Therefore a check is implemented
             # whether the frame parameter is inside the maximum range.
