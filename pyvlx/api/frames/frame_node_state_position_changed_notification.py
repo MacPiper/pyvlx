@@ -59,7 +59,11 @@ class FrameNodeStatePositionChangedNotification(FrameBase):
     @property
     def timestamp_formatted(self) -> str:
         """Return time as human readable string."""
-        return datetime.fromtimestamp(self.timestamp).strftime("%Y-%m-%d %H:%M:%S")
+        try:
+            retVal = datetime.fromtimestamp(self.timestamp).strftime("%Y-%m-%d %H:%M:%S")
+        except:
+            retVal = self.timestamp
+        return retVal
 
     def __str__(self) -> str:
         """Return human readable string."""
